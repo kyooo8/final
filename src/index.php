@@ -32,9 +32,6 @@
     <div class="container">
         <form action="add.php" method="post">
             <input type="text" name="title">
-            <input type="text" name="row">
-            <input type="text" name="due_date">
-            <input type="text" name="category">
             <button type="submit" name="button">登録</button>
         </form>
         <button type="submit">カレンダー表示</button>
