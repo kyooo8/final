@@ -8,13 +8,17 @@
 <body>
     ToDoリスト
     <?php
-    if($_POST['button'] == 1){
+    if(isset($_POST['title'],$_POST['row'],$_POST['due_date'],$_POST['category'])){
         require 'db.php';
         $pdo = new PDO($connect, USER, PASS);
+
         $category_sql = $pdo->prepare('insert into Category (category_name) values (?)');
         $category_sql->execute([$_POST['category']]);
+
         $category_id = $pdo->prepare('select category_id from Category where Category_name = ?');
         $category_id->execute([$_POST['category']]);
+        $category_id = $category_id->fetchColumn();
+
         $task_sql = $pdo->prepare('insert into Task(title`row`,state,due_date,create_date,category_id)
                                 values(?,?,false,?,current_date(),?)');
         $task_sql->execute([$_POST['title'],$_POST['row'],$_POST['due_date'],$category_id]);
