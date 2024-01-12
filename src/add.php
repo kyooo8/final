@@ -11,7 +11,7 @@
         <input type="text" name="row">
         <input type="text" name="due_date">
         <input type="text" name="category">
-        <button type="submit" id="1">追加</button>
+        <button type="submit" name="button" id="1">追加</button>
     </form>
 </body>
 </html>
