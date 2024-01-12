@@ -11,7 +11,7 @@
         $pdo = new PDO($connect, USER, PASS);
         $sql = $pdo->query('select * from Task');
         foreach($sql as $row){
-            $category = $pdo->prepare('select category_name form Category where id = ?');
+            $category = $pdo->prepare('select category_name form Category where category_id = ?');
             $category->execute([$row['category_id']]);
             $category = $category->fetchColumn();
             echo '<tr>';
