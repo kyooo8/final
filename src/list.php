@@ -13,6 +13,7 @@
         foreach($sql as $row){
             $category = $pdo->prepare('select category_name form Category where id = ?');
             $category->execute([$row['category_id']]);
+            $category = $category->fetchColumn();
             echo '<tr>';
             echo '<td>',$row['title'],'</td>';
             echo '<td>',$row['row'],'</td>';
