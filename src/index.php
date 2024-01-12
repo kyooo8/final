@@ -8,7 +8,7 @@
 <body>
     ToDoリスト
     <?php
-    if($id == 1){
+    if($_POST['id'] == 1){
         require 'db.php';
         $pdo = new PDO($connect, USER, PASS);
         $category_sql = $pdo->prepare('insert into Category (category_name) values (?)');
