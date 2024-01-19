@@ -39,7 +39,7 @@
     <input type="date" name="due_date" required>
 
     <label>
-        <input type="radio" name="category_type" value="existing" checked>
+        <input type="radio" name="category" value="existing" checked>
         既存のカテゴリーを選択：
     </label>
     <select name="category" >
@@ -54,7 +54,7 @@
         <input type="radio" name="category_type" value="new">
         新しいカテゴリーを作成：
     </label>
-    <input type="text" name="new_category" placeholder="新しいカテゴリーを入力">
+    <input type="text" name="category" placeholder="新しいカテゴリーを入力">
 
     <button type="submit" name="button">登録</button>
 </form>
