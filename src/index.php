@@ -34,20 +34,30 @@
     ?>
     <div class="container">
         <form action="add.php" method="post">
-            <input type="text" name="title" required>
-            <input type="text" name="row" required>
-            <input type="date" name="due_date" required>
+    <input type="text" name="title" required>
+    <input type="text" name="row" required>
+    <input type="date" name="due_date" required>
 
-            <select name="category" required>
-                <?php
-                    foreach ($categories as $category) {
-                        echo '<option value="' . $category['category_id'] . '">' . htmlspecialchars($category['category_name']) . '</option>';
-                    }
-                ?>
-            </select>
+    <label>
+        <input type="radio" name="category_type" value="existing" checked>
+        既存のカテゴリーを選択：
+    </label>
+    <select name="category" >
+        <?php
+            foreach ($categories as $category) {
+                echo '<option value="' . $category['category_id'] . '">' . htmlspecialchars($category['category_name']) . '</option>';
+            }
+        ?>
+    </select>
 
-            <button type="submit" name="button">登録</button>
-        </form>
+    <label>
+        <input type="radio" name="category_type" value="new">
+        新しいカテゴリーを作成：
+    </label>
+    <input type="text" name="new_category" placeholder="新しいカテゴリーを入力">
+
+    <button type="submit" name="button">登録</button>
+</form>
 
         <div class="nextTask">
             <h2>次のタスク</h2>

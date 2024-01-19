@@ -9,6 +9,9 @@
     <?php 
         require 'db.php'; 
         $pdo = new PDO($connect, USER, PASS);
+
+        $categories = $pdo->query('SELECT * FROM Category')->fetchAll(PDO::FETCH_ASSOC);
+
         $sql = $pdo->query('SELECT * FROM Task');
         
         if(isset($_POST["delete"])){
