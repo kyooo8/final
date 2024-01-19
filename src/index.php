@@ -36,16 +36,6 @@
             <button type="submit" name="button">登録</button>
         </form>
 
-        <div class="nextTask">
-            <h2>次のタスク</h2>
-            <?php
-                $tasks = $pdo->query('SELECT * FROM Task ORDER BY create_date DESC LIMIT 1');
-                foreach($tasks as $task){
-                    echo '<p>', $task['title'], ' - ', $task['due_date'], '</p>';
-                }
-            ?>
-        </div>
-
         <button type="submit">カレンダー表示</button>
         <button type="button">
             <a href="list.php">一覧</a>
