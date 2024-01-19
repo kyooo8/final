@@ -12,12 +12,12 @@
         $sql = $pdo->query('SELECT * FROM Task');
         
         if(isset($_POST["delete"])){
-            $delete = $pdo->prepare("delete from Task where ?");
-            $delete->execute([$_POST['id']]);
+            $delete = $pdo->prepare("DELETE FROM Task WHERE task_id = ?");
+            $delete->execute([$_POST['delete']]);
         }
         if(isset($_POST["edit"])){
-            $edit = $pdo->prepare("update Task set title = ? ,row = ? ,state = ?,due_date = ?,category_id = ? where id = ?");
-            $edit->execute([$_POST['title'],$_POST['row'],$_POST['state'],$_POST['due_date'],$_GET['edit'],$_POST['id']]);
+            $edit = $pdo->prepare("UPDATE Task SET title = ?, row = ?, state = ?, due_date = ?, category_id = ? WHERE task_id = ?");
+            $edit->execute([$_POST['title'], $_POST['row'], $_POST['state'], $_POST['due_date'], $_POST['edit'], $_POST['id']]);
         }
     ?> 
     <div class="container">
@@ -29,9 +29,9 @@
                 <th>Due Date</th>
                 <th>Create Date</th>
                 <th>Category</th>
+                <th>Actions</th>
             </tr>
-            <iframe id="iframe" name="iframe" style="display: none;"></iframe>
-            <form action="" method="post" target="iframe">
+            <form action="" method="post">
                 <?php
                     foreach($sql as $row){
                         $category = $pdo->prepare('SELECT category_name FROM Category WHERE category_id = ?');
@@ -44,10 +44,9 @@
                         echo '<td>', $row['due_date'], '</td>';
                         echo '<td>', $row['create_date'], '</td>';
                         echo '<td>', $category, '</td>';
-                        echo '<td><input type="submit" name="delete" id = ',$row['task_id'],'>削除</td>';
-                        echo '<td><input type="submit" name="edit" id = ',$row['task_id'],'value=',$row['category_id'],'>編集</td>';
-                        echo '</tr>'; 
-                        
+                        echo '<td><input type="submit" name="delete" value="',$row['task_id'],'">削除</td>';
+                        echo '<td><input type="submit" name="edit" value="',$row['task_id'],'">編集</td>';
+                        echo '</tr>';
                     }
                 ?>
             </form>
