@@ -44,8 +44,8 @@
                         echo '<td>', $row['due_date'], '</td>';
                         echo '<td>', $row['create_date'], '</td>';
                         echo '<td>', $category, '</td>';
-                        echo '<td><input type="submit" name="delete" id = ',$row['id'],'>削除</td>';
-                        echo '<td><input type="submit" name="edit" id = ',$row['id'],'value=',$row['category_id'],'>編集</td>';
+                        echo '<td><input type="submit" name="delete" id = ',$row['task_id'],'>削除</td>';
+                        echo '<td><input type="submit" name="edit" id = ',$row['task_id'],'value=',$row['category_id'],'>編集</td>';
                         echo '</tr>'; 
                         
                     }
