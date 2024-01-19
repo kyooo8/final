@@ -8,11 +8,9 @@
 <body>
     ToDoリスト
     <?php
-
         require 'db.php';
-        
-        if(isset($_POST['title'], $_POST['row'], $_POST['due_date'], $_POST['category'])){
 
+        if(isset($_POST['title'], $_POST['row'], $_POST['due_date'], $_POST['category'])){
             $pdo = new PDO($connect, USER, PASS);
 
             $category_sql = $pdo->prepare('INSERT INTO Category (category_name) VALUES (?)');
@@ -31,14 +29,23 @@
     ?>
     <div class="container">
         <form action="add.php" method="post">
-            <input type="text" name="title">
+            <input type="text" name="title" required>
+            <input type="text" name="row" required>
+            <input type="text" name="due_date" placeholder="YYYY-MM-DD" required>
+            <input type="text" name="category" required>
             <button type="submit" name="button">登録</button>
         </form>
-        <div class="nextTask">
-            <?php
 
+        <div class="nextTask">
+            <h2>次のタスク</h2>
+            <?php
+                $tasks = $pdo->query('SELECT * FROM Task ORDER BY create_date DESC LIMIT 1');
+                foreach($tasks as $task){
+                    echo '<p>', $task['title'], ' - ', $task['due_date'], '</p>';
+                }
             ?>
         </div>
+
         <button type="submit">カレンダー表示</button>
         <button type="button">
             <a href="list.php">一覧</a>
