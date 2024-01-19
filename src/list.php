@@ -10,6 +10,15 @@
         require 'db.php'; 
         $pdo = new PDO($connect, USER, PASS);
         $sql = $pdo->query('SELECT * FROM Task');
+        
+        if(isset($_POST["delete"])){
+            $delete = $pdo->prepare("delete from Task where ?");
+            $delete->execute([$_POST['id']])
+        }
+        if(isset($_POST["edit"])){
+            $edit = $pdo->prepare("update Task set title = ? ,row = ? ,state = ?,due_date = ?,category_id = ? where id = ?");
+            $edit->execute([$_POST['title'],$_POST['row'],$_POST['state'],$_POST['due_date'],$_GET['edit'],$_POST['id']])
+        }
     ?> 
     <div class="container">
         <table>
@@ -35,8 +44,8 @@
                         echo '<td>', $row['due_date'], '</td>';
                         echo '<td>', $row['create_date'], '</td>';
                         echo '<td>', $category, '</td>';
-                        echo '<td><input type="submit" name="delete" values="削除"></td>';
-                        echo '<td><input type="submit" name="edit" values="編集"></td>';
+                        echo '<td><input type="submit" name="delete" id = ',$row['id'],'>削除</td>';
+                        echo '<td><input type="submit" name="edit" id = ',$row['id'],'value=',$row['category_id'],'>編集</td>';
                         echo '</tr>'; 
                         
                     }
