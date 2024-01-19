@@ -13,11 +13,11 @@
         
         if(isset($_POST["delete"])){
             $delete = $pdo->prepare("delete from Task where ?");
-            $delete->execute([$_POST['id']])
+            $delete->execute([$_POST['id']]);
         }
         if(isset($_POST["edit"])){
             $edit = $pdo->prepare("update Task set title = ? ,row = ? ,state = ?,due_date = ?,category_id = ? where id = ?");
-            $edit->execute([$_POST['title'],$_POST['row'],$_POST['state'],$_POST['due_date'],$_GET['edit'],$_POST['id']])
+            $edit->execute([$_POST['title'],$_POST['row'],$_POST['state'],$_POST['due_date'],$_GET['edit'],$_POST['id']]);
         }
     ?> 
     <div class="container">
