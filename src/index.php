@@ -6,35 +6,58 @@
     <title>ToDoリスト</title>
 </head>
 <body>
-    ToDoリスト
     <?php
         require 'db.php';
 
-        if(isset($_POST['title'], $_POST['row'], $_POST['due_date'], $_POST['category'])){
-            $pdo = new PDO($connect, USER, PASS);
+        $pdo = new PDO($connect, USER, PASS);
+        $categories = $pdo->query('SELECT * FROM Category')->fetchAll(PDO::FETCH_ASSOC);
+        
+        try {
+            if(isset($_POST['title'], $_POST['row'], $_POST['due_date'], $_POST['category'])){
 
-            $category_sql = $pdo->prepare('INSERT INTO Category (category_name) VALUES (?)');
-            $category_sql->execute([$_POST['category']]);
+                $category_sql = $pdo->prepare('INSERT INTO Category (category_name) VALUES (?)');
+                $category_sql->execute([$_POST['category']]);
+                
+                $category_id_sql = $pdo->prepare('SELECT category_id FROM Category WHERE category_name = ?');
+                $category_id_sql->execute([$_POST['category']]);
+                $category_id = $category_id_sql->fetchColumn();
 
-            $category_id_sql = $pdo->prepare('SELECT category_id FROM Category WHERE category_name = ?');
-            $category_id_sql->execute([$_POST['category']]);
-            $category_id = $category_id_sql->fetchColumn();
+                $task_sql = $pdo->prepare('INSERT INTO Task(title, `row`, state, due_date, create_date, category_id)
+                                            VALUES (?, ?, false, ?, CURRENT_DATE(), ?)');
+                $task_sql->execute([htmlspecialchars($_POST['title']), htmlspecialchars($_POST['row']), $_POST['due_date'], $category_id]);
 
-            $task_sql = $pdo->prepare('INSERT INTO Task(title, `row`, state, due_date, create_date, category_id)
-                                        VALUES (?, ?, false, ?, CURRENT_DATE(), ?)');
-            $task_sql->execute([$_POST['title'], $_POST['row'], $_POST['due_date'], $category_id]);
-
-            echo '正常に追加しました';
+                echo '正常に追加しました';
+            }
+        } catch (PDOException $e) {
+            echo 'データベースエラー: ' . $e->getMessage();
         }
     ?>
     <div class="container">
         <form action="add.php" method="post">
             <input type="text" name="title" required>
             <input type="text" name="row" required>
-            <input type="date" name="due_date" placeholder="YYYY-MM-DD" required>
-            <input type="text" name="category" required>
+            <input type="date" name="due_date" required>
+
+            <select name="category" required>
+                <?php
+                    foreach ($categories as $category) {
+                        echo '<option value="' . $category['category_id'] . '">' . htmlspecialchars($category['category_name']) . '</option>';
+                    }
+                ?>
+            </select>
+
             <button type="submit" name="button">登録</button>
         </form>
+
+        <div class="nextTask">
+            <h2>次のタスク</h2>
+            <?php
+                $tasks = $pdo->query('SELECT * FROM Task ORDER BY create_date DESC LIMIT 1');
+                foreach($tasks as $task){
+                    echo '<p>', $task['title'], ' - ', $task['due_date'], '</p>';
+                }
+            ?>
+        </div>
 
         <button type="submit">カレンダー表示</button>
         <button type="button">

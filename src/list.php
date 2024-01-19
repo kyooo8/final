@@ -16,8 +16,25 @@
             $delete->execute([$_POST['delete']]);
         }
         if(isset($_POST["edit"])){
-            $edit = $pdo->prepare("UPDATE Task SET title = ?, `row` = ?, state = ?, due_date = ?, category_id = ? WHERE task_id = ?");
-            $edit->execute([$_POST['title'], $_POST['row'], $_POST['state'], $_POST['due_date'], $_POST['edit'], $_POST['id']]);
+            $edit_task = $pdo->prepare('SELECT * FROM Task WHERE task_id = ?');
+            $edit_task->execute([$_POST["edit"]]);
+            $task = $edit_task->fetch();
+            
+            echo '<form action="" method="post">';
+            echo '<input type="hidden" name="id" value="' . $task['task_id'] . '">';
+            echo '<input type="text" name="edit_title" value="' . htmlspecialchars($task['title']) . '" required>';
+            echo '<input type="text" name="edit_row" value="' . htmlspecialchars($task['row']) . '" required>';
+            echo '<input type="date" name="edit_due_date" value="' . $task['due_date'] . '" required>';
+            
+            echo '<select name="edit_category" required>';
+            foreach ($categories as $category) {
+                $selected = ($task['category_id'] == $category['category_id']) ? 'selected' : '';
+                echo '<option value="' . $category['category_id'] . '" ' . $selected . '>' . htmlspecialchars($category['category_name']) . '</option>';
+            }
+            echo '</select>';
+            
+            echo '<button type="submit" name="update_button">更新</button>';
+            echo '</form>';
         }
     ?> 
     <div class="container">
@@ -37,12 +54,12 @@
                     $category->execute([$row['category_id']]);
                     $category = $category->fetchColumn();
                     echo '<tr>';
-                    echo '<td>', $row['title'], '</td>';
-                    echo '<td>', $row['row'], '</td>';
-                    echo '<td>', $row['state'], '</td>';
-                    echo '<td>', $row['due_date'], '</td>';
-                    echo '<td>', $row['create_date'], '</td>';
-                    echo '<td>', $category, '</td>';
+                    echo '<td>', htmlspecialchars($row['title']), '</td>';
+                    echo '<td>', htmlspecialchars($row['row']), '</td>';
+                    echo '<td>', htmlspecialchars($row['state']), '</td>';
+                    echo '<td>', htmlspecialchars($row['due_date']), '</td>';
+                    echo '<td>', htmlspecialchars($row['create_date']), '</td>';
+                    echo '<td>', htmlspecialchars($category), '</td>';
                     echo '<td>
                             <form action="" method="post">
                                 <input type="hidden" name="delete" value="' . $row['task_id'] . '">
