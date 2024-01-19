@@ -9,7 +9,7 @@
     <form action="index.php" method="post">
         <input type="text" name="title" value="<?php echo $_POST['title'];?>">
         <input type="text" name="row">
-        <input type="text" name="due_date">
+        <input type="date" name="due_date">
         <input type="text" name="category">
         <button type="submit" name="button">追加</button>
     </form>
