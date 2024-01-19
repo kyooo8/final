@@ -10,16 +10,17 @@
     <?php
 
         require 'db.php';
-        $pdo = new PDO($connect, USER, PASS);
-
-        $category_sql = $pdo->prepare('INSERT INTO Category (category_name) VALUES (?)');
-        $category_sql->execute([$_POST['category']]);
-
-        $category_id_sql = $pdo->prepare('SELECT category_id FROM Category WHERE category_name = ?');
-        $category_id_sql->execute([$_POST['category']]);
-        $category_id = $category_id_sql->fetchColumn();
-
+        
         if(isset($_POST['title'], $_POST['row'], $_POST['due_date'], $_POST['category'])){
+
+            $pdo = new PDO($connect, USER, PASS);
+
+            $category_sql = $pdo->prepare('INSERT INTO Category (category_name) VALUES (?)');
+            $category_sql->execute([$_POST['category']]);
+
+            $category_id_sql = $pdo->prepare('SELECT category_id FROM Category WHERE category_name = ?');
+            $category_id_sql->execute([$_POST['category']]);
+            $category_id = $category_id_sql->fetchColumn();
 
             $task_sql = $pdo->prepare('INSERT INTO Task(title, `row`, state, due_date, create_date, category_id)
                                         VALUES (?, ?, false, ?, CURRENT_DATE(), ?)');
@@ -35,7 +36,7 @@
         </form>
         <div class="nextTask">
             <?php
-            
+
             ?>
         </div>
         <button type="submit">カレンダー表示</button>
