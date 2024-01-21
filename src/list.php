@@ -10,8 +10,8 @@ if (isset($_POST["update_button"])) {
                                       SET title = ?, `row` = ?, due_date = ?, category_id = ?
                                       WHERE task_id = ?');
         $update_task->execute([
-            htmlspecialchars($_POST["edit_title"]),
-            htmlspecialchars($_POST["edit_row"]),
+            $_POST["edit_title"],
+            $_POST["edit_row"],
             $_POST["edit_due_date"],
             $_POST["edit_category"],
             $_POST["id"]
@@ -25,8 +25,8 @@ if (isset($_POST["update_button"])) {
 if (isset($_POST["delete"])) {
     $delete = $pdo->prepare("DELETE FROM Task WHERE task_id = ?");
     $delete->execute([$_POST['delete']]);
+    echo 'タスクが削除されました';
 }
-
 
 $sql = $pdo->query('SELECT * FROM Task');
 ?>
@@ -38,6 +38,8 @@ $sql = $pdo->query('SELECT * FROM Task');
     <title>ToDo一覧</title>
 </head>
 <body>
+    <a href="index.php">戻る</a>
+    <a href="category.php">カテゴリーの編集</a>
     <div class="container">
         <table>
             <tr>
@@ -55,12 +57,12 @@ $sql = $pdo->query('SELECT * FROM Task');
                     $category->execute([$row['category_id']]);
                     $category = $category->fetchColumn();
                     echo '<tr>';
-                    echo '<td>', htmlspecialchars($row['title']), '</td>';
-                    echo '<td>', htmlspecialchars($row['row']), '</td>';
-                    echo '<td>', htmlspecialchars($row['state']), '</td>';
-                    echo '<td>', htmlspecialchars($row['due_date']), '</td>';
-                    echo '<td>', htmlspecialchars($row['create_date']), '</td>';
-                    echo '<td>', htmlspecialchars($category), '</td>';
+                    echo '<td>', $row['title'], '</td>';
+                    echo '<td>', $row['row'], '</td>';
+                    echo '<td>', $row['state'], '</td>';
+                    echo '<td>', $row['due_date'], '</td>';
+                    echo '<td>', $row['create_date'], '</td>';
+                    echo '<td>', $category, '</td>';
                     echo '<td>
                             <form action="" method="post">
                                 <input type="hidden" name="delete" value="' . $row['task_id'] . '">
@@ -80,7 +82,8 @@ $sql = $pdo->query('SELECT * FROM Task');
                             <td colspan="6">編集中...</td>
                         </tr>';
                 }
-            ?>
+                ?>
+                
         </table>
 
         <?php
@@ -91,14 +94,14 @@ $sql = $pdo->query('SELECT * FROM Task');
 
                 echo '<form action="" method="post">';
                 echo '<input type="hidden" name="id" value="' . $task['task_id'] . '">';
-                echo '<input type="text" name="edit_title" value="' . htmlspecialchars($task['title']) . '" required>';
-                echo '<input type="text" name="edit_row" value="' . htmlspecialchars($task['row']) . '" required>';
+                echo '<input type="text" name="edit_title" value="' . $task['title'] . '" required>';
+                echo '<input type="text" name="edit_row" value="' . $task['row'] . '" required>';
                 echo '<input type="date" name="edit_due_date" value="' . $task['due_date'] . '" required>';
 
                 echo '<select name="edit_category" required>';
                 foreach ($categories as $category) {
                     $selected = ($task['category_id'] == $category['category_id']) ? 'selected' : '';
-                    echo '<option value="' . $category['category_id'] . '" ' . $selected . '>' . htmlspecialchars($category['category_name']) . '</option>';
+                    echo '<option value="' . $category['category_id'] . '" ' . $selected . '>' . $category['category_name'] . '</option>';
                 }
                 echo '</select>';
 
