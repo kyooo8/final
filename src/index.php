@@ -28,8 +28,6 @@
     <div class="container">
         <form action="add.php" method="post">
     <input type="text" name="title" required>
-    <input type="text" name="row" required>
-    <input type="date" name="due_date" required>
     
     <button type="submit" name="button">登録</button>
 </form>

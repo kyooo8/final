@@ -18,10 +18,10 @@
         <input type="text" id="title" name="title" value="<?php echo isset($_POST['title']) ? $_POST['title'] : ''; ?>">
 
         <label for="row">内容：</label>
-        <input type="text" id="row" name="row" value="<?php echo isset($_POST['row']) ? $_POST['row'] : ''; ?>">
+        <input type="text" id="row" name="row" ">
 
         <label for="due_date">期限日：</label>
-        <input type="date" id="due_date" name="due_date" value="<?php echo isset($_POST['due_date']) ? $_POST['due_date'] : ''; ?>">
+        <input type="date" id="due_date" name="due_date" required>
 
         <select name="category" >
         <?php
